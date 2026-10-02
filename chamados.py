@@ -50,8 +50,18 @@ chamados = [
   { "id": 49, "titulo": "Vazamento de memória na aba", "prioridade": "Crítica", "status": "Aberto", "usuario": "Cláudia Raia" },
   { "id": 50, "titulo": "Ajustar alinhamento do rodapé", "prioridade": "Baixa", "status": "Fechado", "usuario": "Dado Dolabella" }
 ]
+def mostrar_chamado(c):
+  print(f"id={c["id"]} titulo: {c["titolo"]} prioridade: {c["prioridade"]} status: {c["status"]} usuario: {c["usuarios"]}")
 
-
+def pesquisa_usuario():
+  nome = input("insira o nome do usuario")
+  a = 0
+  for c in chamados:
+    if c["usuario"].lower() == nome.lower():
+      print(c)
+      a += 1
+  if a == 0:
+    print("não exite um usuario com esse nome")
 
 while True:
   print("1 - pesquisa por usuario")
@@ -66,7 +76,7 @@ while True:
   opt = input("selecione uma opção: ")
 
   if opt == "1":
-    print("1")
+    pesquisa_usuario()
   elif opt == "2":
     print("2")
   elif opt == "3":
