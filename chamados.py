@@ -58,7 +58,7 @@ def pesquisa_usuario():
   print("")
   a = 0
   for c in chamados:
-    if c["usuario"].lower() == nome.lower():
+    if nome.lower() in c["usuario"].lower():
       print(c)
       a += 1
   if a == 0:
@@ -90,17 +90,20 @@ def pesquisa_prioridade():
   print("")
 
 def pesquisa_status():
+  #11 linhas para determinar a prioridade
   opt = input("você deseja ver chamados em aberto em progresso ou fechados: ")
   print("")
   if (opt.lower() == "abertos") or (opt.lower() == "a"):
     status = "Aberto"
-  elif (opt.lower() == "progresso") or (opt.lower().replace(" ","") == "emprogresso") or (opt.lower() == "e" or opt.lower() == "p"):
+  elif opt.lower() in ["progresso","e","p","ep"] or (opt.lower().replace(" ","") == "emprogresso"):
     status = "Em progresso"
-  elif (opt.lower() == "fechados") or (opt.lower == "f"):
+  elif opt.lower() == ["fechados", "f"]:
     status = "Fechado"
   else:
     print("erro ao processar entrada")
     return 0
+  
+  #mostra os chamados
   for c in chamados:
     if c["status"] == status:
       mostrar_chamado(c)
@@ -111,6 +114,113 @@ def chamdos_urgentes():
     if (c["prioridade"] == "Crítica") and (c["status"] == "Aberto"):
       mostrar_chamado(c)
   input("aperte Enter para continuar")
+
+def criar_id():
+  #essa função e usada para criar um novo id que não está presente na lista
+  novo_id = 1
+  for c in chamados:
+    if c["id"] >= novo_id:
+      novo_id = c["id"]+1
+  return novo_id
+
+def abrir_chamdado():
+  #pega as informações basicas do chamdo
+  nome = input("insira o titulo do chamado: ")
+  usuario = input("insira o nome do usuario que esta fazando o chamado: ")
+  novo_id = criar_id()
+
+  #tudo isso é para inserir a prioridade
+  while True:
+    print("1 - Crítica")
+    print("2 - Alta")
+    print("3 - Média")
+    print("4 - Baixa")
+    print("0 - Sair")
+    opt = input("insira a prioridade do chamado: ")
+    if opt == "0":
+      print("")
+      return 0
+    elif opt == "1" :
+      prioridade = "Crítica"
+      break
+    elif opt == "2":
+      prioridade = "Alta"
+      break
+    elif opt == "3":
+      prioridade = "Média"
+      break
+    elif opt == "4":
+      prioridade = "Baixa"
+      break
+    else:
+      print("opção invalida")
+  
+  #usado para confirmar a operação
+  while True:
+    print(f"id={novo_id} titulo: {nome} prioridade: {prioridade} status: aberto usuario: {usuario}")
+    opt = input("você deseja comfirmar a operação [S/N]: ")
+    if opt.lower() in ["sim", "s"]:
+      chamados.append({"id":novo_id, "titulo":nome, "prioridade":prioridade, "status":"aberto", "usuario":usuario})
+      print("chamado aberto")
+      break
+    elif opt.lower in ["não","nao","n"]:
+      print("operação cancelada")
+      break
+    else:
+      print("opção invalida")
+    
+def resover_chamado():
+  #para evitar que o programa resulva mais de uma chamdo essa função usa o id do chamdo
+  while True:
+    try:
+      id_do_chamado = int(input("insira o id do chamado: "))
+      break
+    except:
+      print("erro a processar entrada")
+  for c in chamados:
+    if c["id"] == id_do_chamado:
+      index = chamados.index(c)
+      mostrar_chamado(c)
+      break
+  #usado para confirmar ação
+  while True:
+    opt = input("Deseja confirmar a operação? [S/N]")
+
+    if opt.lower() in ["sim", "s"]:
+      chamados[index]["status"] = "Em progresso"
+      break
+    elif opt.lower in ["não","nao","n"]:
+      print("operação cancelada")
+      break
+    else:
+      print("opção invalida")
+
+def fechar_chamado():
+  #para evitar que o programa resulva mais de uma chamdo essa função usa o id do chamdo
+  while True:
+    try:
+      id_do_chamado = int(input("insira o id do chamado: "))
+      break
+    except:
+      print("erro a processar entrada")
+  for c in chamados:
+    if c["id"] == id_do_chamado:
+      index = chamados.index(c)
+      mostrar_chamado(c)
+      break
+  #usado para confirmar ação
+  while True:
+    opt = input("Deseja confirmar a operação? [S/N]")
+
+    if opt.lower() in ["sim", "s"]:
+      chamados[index]["status"] = "Fechado"
+      break
+    elif opt.lower in ["não","nao","n"]:
+      print("operação cancelada")
+      break
+    else:
+      print("opção invalida")
+      
 
 while True:
   print("1 - pesquisa por usuario")
@@ -133,11 +243,11 @@ while True:
   elif opt == "4":
     chamdos_urgentes()
   elif opt == "5":
-    print("5")
+    abrir_chamdado()
   elif opt == "6":
-    print("6")
+    resover_chamado()
   elif opt == "7":
-    print("7")
+    fechar_chamado()
   elif opt == "0":
     exit()
   else:
