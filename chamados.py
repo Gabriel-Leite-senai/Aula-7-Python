@@ -51,10 +51,11 @@ chamados = [
   { "id": 50, "titulo": "Ajustar alinhamento do rodapé", "prioridade": "Baixa", "status": "Fechado", "usuario": "Dado Dolabella" }
 ]
 def mostrar_chamado(c):
-  print(f"id={c["id"]} titulo: {c["titolo"]} prioridade: {c["prioridade"]} status: {c["status"]} usuario: {c["usuarios"]}")
+  print(f"id={c["id"]} titulo: {c["titulo"]} prioridade: {c["prioridade"]} status: {c["status"]} usuario: {c["usuario"]}")
 
 def pesquisa_usuario():
-  nome = input("insira o nome do usuario")
+  nome = input("insira o nome do usuario: ")
+  print("")
   a = 0
   for c in chamados:
     if c["usuario"].lower() == nome.lower():
@@ -62,6 +63,54 @@ def pesquisa_usuario():
       a += 1
   if a == 0:
     print("não exite um usuario com esse nome")
+  input("aperte Enter para continuar")
+  print("")
+
+def pesquisa_prioridade():
+  print("1-Crítica")
+  print("2-Alta")
+  print("3-Média")
+  print("4-Baixa")
+  opt = input("qual a prioridade dos chamados que você deseja ver: ")
+  print("")
+  if opt == "1":
+    prioridade = "Crítica"
+  elif opt == "2":
+    prioridade = "Alta"
+  elif opt == "3":
+    prioridade = "Média"
+  elif opt == "4":
+    prioridade = "Baixa"
+  else:
+    return 0
+  for c in chamados:
+    if c["prioridade"] == prioridade:
+      mostrar_chamado(c)
+  input("aperte Enter para continuar")
+  print("")
+
+def pesquisa_status():
+  opt = input("você deseja ver chamados em aberto em progresso ou fechados: ")
+  print("")
+  if (opt.lower() == "abertos") or (opt.lower() == "a"):
+    status = "Aberto"
+  elif (opt.lower() == "progresso") or (opt.lower().replace(" ","") == "emprogresso") or (opt.lower() == "e" or opt.lower() == "p"):
+    status = "Em progresso"
+  elif (opt.lower() == "fechados") or (opt.lower == "f"):
+    status = "Fechado"
+  else:
+    print("erro ao processar entrada")
+    return 0
+  for c in chamados:
+    if c["status"] == status:
+      mostrar_chamado(c)
+  input("aperte Enter para continuar")
+
+def chamdos_urgentes():
+  for c in chamados:
+    if (c["prioridade"] == "Crítica") and (c["status"] == "Aberto"):
+      mostrar_chamado(c)
+  input("aperte Enter para continuar")
 
 while True:
   print("1 - pesquisa por usuario")
@@ -78,11 +127,11 @@ while True:
   if opt == "1":
     pesquisa_usuario()
   elif opt == "2":
-    print("2")
+    pesquisa_prioridade()
   elif opt == "3":
-    print("3")
+    pesquisa_status()
   elif opt == "4":
-    print("4")
+    chamdos_urgentes()
   elif opt == "5":
     print("5")
   elif opt == "6":
