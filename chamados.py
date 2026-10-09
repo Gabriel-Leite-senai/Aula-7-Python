@@ -97,7 +97,7 @@ def pesquisa_status():
     status = "Aberto"
   elif opt.lower() in ["progresso","e","p","ep"] or (opt.lower().replace(" ","") == "emprogresso"):
     status = "Em progresso"
-  elif opt.lower() == ["fechados", "f"]:
+  elif opt.lower() in ["fechados", "f"]:
     status = "Fechado"
   else:
     print("erro ao processar entrada")
@@ -189,7 +189,7 @@ def resover_chamado():
     if opt.lower() in ["sim", "s"]:
       chamados[index]["status"] = "Em progresso"
       break
-    elif opt.lower in ["não","nao","n"]:
+    elif opt.lower() in ["não","nao","n"]:
       print("operação cancelada")
       break
     else:
@@ -215,7 +215,7 @@ def fechar_chamado():
     if opt.lower() in ["sim", "s"]:
       chamados[index]["status"] = "Fechado"
       break
-    elif opt.lower in ["não","nao","n"]:
+    elif opt.lower() in ["não","nao","n"]:
       print("operação cancelada")
       break
     else:
